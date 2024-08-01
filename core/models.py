@@ -11,8 +11,8 @@ class User(AbstractUser):
         upload_to='profile', max_length=100, blank=True, null=True)
 
     is_online = models.BooleanField(default=False)
-    following = models.ManyToManyField("User", related_name="my_following", blank=True)
-    friends = models.ManyToManyField("User", related_name='my_friends', blank=True)
+    # following = models.ManyToManyField("User", related_name="my_following", blank=True)
+    # friends = models.ManyToManyField("User", related_name='my_friends', blank=True)
     bio = models.CharField(max_length=1000 , null=True , blank=True)
 
     confirmation_tries = models.IntegerField(default=3, blank=True)

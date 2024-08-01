@@ -1,0 +1,11 @@
+{
+  "username": "abdulkareem_edres",
+  "password": "q111w222",
+  "password2": "q111w222",
+  "email": "abdulkarim.edres3+100@gmail.com",
+  "first_name": "abdulkareem",
+  "last_name": "edred",
+  "birth_date": "2019-08-24",
+  "gender": "Male"
+}
+

@@ -2,7 +2,7 @@
 
 from rest_framework import generics, permissions
 from .models import Post, Comment, Like, Follower
-from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from .serializers import PostSerializer, CommentSerializer, LikeSerializer , UserSerializer
 from django.db.models import Q
 
 class PostListCreateView(generics.ListCreateAPIView):
@@ -64,3 +64,23 @@ class LikeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+from django.contrib.auth import get_user_model
+from .models import Follower
+
+User = get_user_model()
+
+class UserFollowingListView(generics.ListAPIView):
+    serializer_class = UserSerializer  # Define a suitable serializer for user
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(following__follower=user)
+
+class UserFollowersListView(generics.ListAPIView):
+    serializer_class = UserSerializer  # Define a suitable serializer for user
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(followers__user=user)
