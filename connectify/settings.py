@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'knox',
     'drf_spectacular',
     'corsheaders',
+    'social_network',
 
 ]
 
@@ -137,3 +138,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'abdulkarimedris979@gmail.com'
 EMAIL_HOST_PASSWORD = 'hlmngjbxuerofkfl'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'

@@ -26,6 +26,8 @@ class User(AbstractUser):
     forget_next_confirm_try = models.DateTimeField(blank=True, null=True)
     forget_password_code = models.CharField(
         blank=True, null=True, max_length=6)
+    
+    is_private = models.BooleanField(default=False)
 
 
     def save(self, *args, **kwargs):
