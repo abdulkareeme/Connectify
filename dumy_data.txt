@@ -9,3 +9,21 @@
   "gender": "Male"
 }
 
+
+{
+    "user_info": {
+        "id": 7,
+        "username": "abdulkareem_edres2",
+        "email": "abdulkarim.edris3+12@gmail.com",
+        "first_name": "abdulkareem",
+        "last_name": "edred",
+        "photo": "http://127.0.0.1:8000/media/profile/Male.jpg",
+        "birth_date": "2019-08-24",
+        "date_joined": "2024-08-01T15:46:52.156123Z",
+        "gender": "Male",
+        "bio": null
+    },
+    "token": [
+        "88816ad993173f33a2b728f129c6448283dab3b3524718bdbdee0939992dd63f"
+    ]
+}

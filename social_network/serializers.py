@@ -34,3 +34,5 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'followers_count', 'following_count']
+class SavaPostSpectacular(serializers.Serializer):
+    post_id = serializers.IntegerField()
