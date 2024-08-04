@@ -6,6 +6,10 @@ import { GoHomeFill } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import ProfileImage from "../../assets/aroun-poul.jpg";
+import Cookies from "js-cookie";
+
+const storedUser = Cookies.get("userTotalInfo") || "";
+const userInfo = JSON.parse(storedUser);
 
 const Sidebar = () => {
   const { pathname } = useLocation();
@@ -67,7 +71,7 @@ const Sidebar = () => {
         })}
         <li className={`font-bold text-[17px]`}>
           <NavLink
-            to={"/profile"}
+            to={`/${userInfo.username}`}
             className="text-black flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
           >
             <img

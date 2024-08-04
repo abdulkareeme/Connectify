@@ -45,8 +45,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/saved" element={<ProfileSaved />} />
+        <Route path="/:username" element={<Profile />} />
+        <Route path="/:username/saved" element={<ProfileSaved />} />
         <Route path="/login" element={<LoginAuth />} />
         <Route path="/signup" element={<SignupAuth />} />
         <Route path="/confirm_email" element={<ConfirmEmail />} />
