@@ -4,14 +4,17 @@ import Pic from "../assets/aroun-poul.jpg";
 import Cookies from "js-cookie";
 import axios from "axios";
 import UserCard from "./UserCard";
+import { useParams } from "react-router-dom";
 const UsersModal = ({ type }) => {
+  const { username } = useParams();
+
   const token = Cookies.get("userToken") || "";
   const [allUsers, setAllUsers] = useState(null);
 
   const getFollowers = async () => {
     try {
       const res = await axios(
-        `https://abdulkareem3.pythonanywhere.com/social/followers/`,
+        `https://abdulkareem3.pythonanywhere.com/social/followers/${username}/`,
         {
           headers: {
             Authorization: `${token}`,
@@ -28,7 +31,7 @@ const UsersModal = ({ type }) => {
   const getFollowing = async () => {
     try {
       const res = await axios(
-        `https://abdulkareem3.pythonanywhere.com/social/following/`,
+        `https://abdulkareem3.pythonanywhere.com/social/following/${username}/`,
         {
           headers: {
             Authorization: `${token}`,
@@ -58,7 +61,7 @@ const UsersModal = ({ type }) => {
         <h3 className="font-bold text-lg mb-3 mx-auto w-fit">{type}</h3>
         <div className="flex flex-col gap-4">
           {allUsers?.map((user, index) => (
-            <UserCard key={index} user={user.user} />
+            <UserCard key={index} user={user} followingUser={allUsers} />
           ))}
           {/* item */}
           <div className="flex justify-between">

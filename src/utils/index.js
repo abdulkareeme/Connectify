@@ -8,6 +8,10 @@ export const isSavedByMe = (postsId, id) => {
   return postsId.includes(id);
 };
 
+export const isFollwingByMe = (followingUser, currentUser) => {
+  return followingUser.includes(currentUser);
+};
+
 export const getRelativeTime = (date) => {
   const now = new Date();
   const createdAtDate = parseISO(date);

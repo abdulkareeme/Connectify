@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import ProfileImage from "../../assets/aroun-poul.jpg";
 import Cookies from "js-cookie";
+import CreatePostModal from "../CreatePostModal";
 
 const storedUser = Cookies.get("userTotalInfo") || "";
 const userInfo = JSON.parse(storedUser);
@@ -34,12 +35,10 @@ const Sidebar = () => {
       route: "/saved",
       label: "Saved",
     },
-    {
-      icon: <FaRegSquarePlus />,
-      route: "/create-post",
-      label: "Create Post",
-    },
   ];
+  const openCreatePostModal = () => {
+    document.getElementById(`my_modal_7744`).showModal();
+  };
 
   return (
     <div className="fixed left-0 top-0 h-screen bg-white px-3 py-6 min-w-[270px]">
@@ -71,6 +70,17 @@ const Sidebar = () => {
         })}
         <li className={`font-bold text-[17px]`}>
           <NavLink
+            onClick={() => openCreatePostModal()}
+            className="text-black flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
+          >
+            <span className="text-[25px]">
+              <FaRegSquarePlus />
+            </span>
+            Create Post
+          </NavLink>
+        </li>
+        <li className={`font-bold text-[17px]`}>
+          <NavLink
             to={`/${userInfo.username}`}
             className="text-black flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
           >
@@ -83,6 +93,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
       </ul>
+      <CreatePostModal />
     </div>
   );
 };

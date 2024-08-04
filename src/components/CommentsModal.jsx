@@ -56,9 +56,14 @@ const CommentsModal = ({ id, commentsData, setCommentsNumber }) => {
         <h3 className="font-bold text-lg mb-3">Comments</h3>
         <div className="flex flex-col gap-4">
           {comments?.map((comment, index) => {
-            console.log("TESTS");
-            const [user, text] = comment.split(": ");
-            return <Comment key={index} comment={text} user={user} />;
+            return (
+              <Comment
+                key={index}
+                comment={comment.content}
+                user={comment.user}
+                commentTime={comment.created_at}
+              />
+            );
           })}
         </div>
         {/* Add Comment */}

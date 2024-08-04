@@ -5,7 +5,6 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa";
-import ProfileImage from "../../assets/omar.jpg";
 import { useState } from "react";
 import CommentsModal from "../CommentsModal";
 import axios from "axios";
@@ -124,17 +123,17 @@ const Post = ({ data, allSavedPostsId }) => {
     <div className="Post">
       <div className="userinfo flex items-center gap-3 p-1 text-[14px]">
         <img
-          src={ProfileImage}
+          src={data.user.photo}
           className=" w-[40px] h-[40px] rounded-full"
           alt=""
         />
         <div className="flex gap-[3px] items-center">
-          <span>{data.user}</span>
+          <span>{data.user.username}</span>
           <span className="text-[#737373] text-[11px]">•</span>
           <span className="text-[#737373]">{postDate}</span>
         </div>
       </div>
-      <img src={data?.img} alt="" />
+      <img src={data?.image} alt="" />
 
       <div className="postReact flex justify-between">
         <div className="flex gap-4">
@@ -177,7 +176,7 @@ const Post = ({ data, allSavedPostsId }) => {
         </span>
         <div className="flex gap-1 items-center">
           <span>
-            <b>{data.user}</b>
+            <b>{data.user.username}</b>
           </span>
           <span>{data.content}</span>
         </div>

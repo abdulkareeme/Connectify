@@ -3,7 +3,7 @@ import GridPostsList from "../components/GridPostsList";
 
 const Profile = () => {
   return (
-    <div className="px-[60px] py-[40px]">
+    <div className="px-[60px] py-[40px] w-full">
       <ProfileLayout>
         <GridPostsList />
       </ProfileLayout>

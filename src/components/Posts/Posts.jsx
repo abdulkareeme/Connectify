@@ -53,12 +53,11 @@ const Posts = () => {
       )}
       {allPosts &&
         allSavedPostsId &&
-        allPosts?.map((post, id) => {
+        allPosts?.map((post, index) => {
           return (
             <Post
-              key={id}
+              key={index}
               data={post}
-              id={id}
               allSavedPostsId={allSavedPostsId}
             />
           );

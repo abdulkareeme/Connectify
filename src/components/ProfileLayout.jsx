@@ -5,7 +5,7 @@ import ProfileDetails from "./ProfileDetails";
 const ProfileLayout = ({ children }) => {
   return (
     <div>
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col gap-20 w-full">
         <ProfileDetails />
         <PostsHeading />
       </div>
