@@ -1,7 +1,13 @@
 import { differenceInMinutes, parseISO } from "date-fns";
 
 export const isLikedByMe = (likes, currentUser) => {
-  return likes.includes(currentUser);
+  const userLikes = likes.map((like) => like.user.username);
+  console.log("userLikes", userLikes);
+  console.log(
+    "userLikes.includes(currentUser)",
+    userLikes.includes(currentUser)
+  );
+  return userLikes.includes(currentUser);
 };
 
 export const isSavedByMe = (postsId, id) => {

@@ -1,16 +1,12 @@
 /* eslint-disable react/prop-types */
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import UserSkeleton from "./UserSkeleton";
+import useSWR from "swr";
 
-const LikesModal = ({ id }) => {
-  const { username } = useParams();
-
+const LikesModal = ({ id, username }) => {
   const token = Cookies.get("userToken") || "";
-  const [allLikes, setAllLikes] = useState(null);
-  const [allUsers, setAllUsers] = useState(null);
 
   const getPostLikes = async () => {
     try {
@@ -23,7 +19,7 @@ const LikesModal = ({ id }) => {
         }
       );
       console.log(res);
-      setAllLikes(res.data);
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -38,16 +34,16 @@ const LikesModal = ({ id }) => {
           },
         }
       );
-      console.log(res);
-      setAllUsers(res.data);
+      return res.data;
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(() => {
-    getPostLikes();
-    getFollowers();
-  }, []);
+  const { data: allLikes, isValidating } = useSWR(
+    `${username}/${id}/post_likes`,
+    getPostLikes
+  );
+  const { data: allUsers } = useSWR(`${username}/user_followers`, getFollowers);
 
   return (
     <dialog id={`my_modal_${id}_${id}`} className="modal">
@@ -59,11 +55,29 @@ const LikesModal = ({ id }) => {
         </form>
         <h3 className="font-bold text-lg mb-3 mx-auto w-fit">Likes</h3>
         <div className="flex flex-col gap-4 overflow-y-auto h-52 px-3">
-          {allLikes?.map((like, index) => {
-            return (
-              <UserCard key={index} user={like.user} followingUser={allUsers} />
-            );
-          })}
+          {isValidating &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <UserSkeleton key={index} />
+            ))}
+          {!isValidating &&
+            allUsers &&
+            allLikes &&
+            allLikes.map((like, index) => {
+              return (
+                <UserCard
+                  key={index}
+                  user={like.user}
+                  followingUser={allUsers}
+                />
+              );
+            })}
+          {!isValidating && allLikes && allLikes.length == 0 && (
+            <div className="w-full h-full flex justify-center items-center">
+              <h2 className="text-[20px] w-max mx-auto text-center">
+                No likes yet. Be the first to like this!
+              </h2>
+            </div>
+          )}
         </div>
       </div>
     </dialog>

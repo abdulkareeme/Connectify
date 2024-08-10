@@ -11,7 +11,7 @@ const ProfileSaved = () => {
   const getSavedPosts = async () => {
     try {
       const res = await axios(
-        "https://abdulkareem3.pythonanywhere.com/social/posts/",
+        "https://abdulkareem3.pythonanywhere.com/social/saved-posts/",
         {
           headers: {
             Authorization: `${token}`,

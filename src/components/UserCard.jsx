@@ -2,13 +2,13 @@ import axios from "axios";
 import { isFollwingByMe } from "../utils";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { useUserContext } from "../Context/UserContextProvider";
 
 /* eslint-disable react/prop-types */
 
 const UserCard = ({ user, followingUser }) => {
   const token = Cookies.get("userToken") || "";
-  const storedUser = Cookies.get("userTotalInfo") || "";
-  const userInfo = JSON.parse(storedUser);
+  const { user: userInfo } = useUserContext();
   const [isFollowing, setIsFollowing] = useState(null);
 
   useEffect(() => {
@@ -69,7 +69,8 @@ const UserCard = ({ user, followingUser }) => {
         }
         className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
       >
-        {isFollowing ? "Following" : "Follow"}
+        Following
+        {/* {isFollowing ? "Following" : "Follow"} */}
       </button>
     </div>
   );

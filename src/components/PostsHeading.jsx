@@ -1,17 +1,20 @@
-import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
-
-const storedUser = Cookies.get("userTotalInfo") || "";
-const userInfo = JSON.parse(storedUser);
+import { Link, useLocation } from "react-router-dom";
+import { useUserContext } from "../Context/UserContextProvider";
 
 const PostsHeading = () => {
+  const { user: userInfo } = useUserContext();
+
+  const location = useLocation();
+  const isSavedActive = location.pathname.includes("saved");
   return (
     <div className="post-sec">
       <hr className="bg-black" />
       <div className="posts-head flex justify-center gap-2 mb-3">
         <Link
           to={`/${userInfo.username}`}
-          className="space cursor-pointer p-2 border-t-2 border-solid border-black text-[14px] text-black flex gap-2 items-center hover:text-black"
+          className={`space cursor-pointer p-2 pt-3 border-t-2 border-solid text-[14px] text-[#737373] flex gap-2 items-center hover:text-black ${
+            !isSavedActive ? "border-black text-black" : "border-transparent"
+          }`}
         >
           <svg
             aria-label=""
@@ -83,7 +86,11 @@ const PostsHeading = () => {
         </Link>
         <Link
           to={`/${userInfo.username}/saved`}
-          className="cursor-pointer p-2 text-[14px] text-black flex gap-2 items-center hover:text-black"
+          className={`cursor-pointer p-2 pt-3 text-[14px] text-[#737373] flex gap-2 items-center hover:text-black ${
+            isSavedActive
+              ? "border-black text-black border-t-2 border-solid"
+              : ""
+          }`}
         >
           <svg
             aria-label=""

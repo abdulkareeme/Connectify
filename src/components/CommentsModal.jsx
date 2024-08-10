@@ -3,12 +3,13 @@ import { useRef, useState } from "react";
 import Comment from "./Comment";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useUserContext } from "../Context/UserContextProvider";
 
 const token = Cookies.get("userToken") || "";
-const storedUser = Cookies.get("userTotalInfo") || "";
-const userInfo = JSON.parse(storedUser);
 
 const CommentsModal = ({ id, commentsData, setCommentsNumber }) => {
+  const { user: userInfo } = useUserContext();
+
   const commentInputRef = useRef(null);
   const [comments, setComments] = useState(commentsData);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +31,14 @@ const CommentsModal = ({ id, commentsData, setCommentsNumber }) => {
           },
         }
       );
+      const now = new Date();
+      const formattedNow = `${now.toISOString().split(".")[0]}.${now
+        .getMilliseconds()
+        .toString()
+        .padStart(3, "0")}Z`;
       setComments((prevComments) => [
         ...prevComments,
-        `${userInfo.username}: ${newComment}`,
+        { content: newComment, user: userInfo, created_at: formattedNow },
       ]);
       setCommentsNumber((prevCommentsNumber) => prevCommentsNumber + 1);
       console.log("Comment added:", res.data);
@@ -65,6 +71,13 @@ const CommentsModal = ({ id, commentsData, setCommentsNumber }) => {
               />
             );
           })}
+          {comments && comments.length == 0 && (
+            <div className="w-full h-full flex justify-center items-center py-3">
+              <h2 className="text-[18px] w-max mx-auto text-center">
+                No Comments yet. Be the first to comment on this!
+              </h2>
+            </div>
+          )}
         </div>
         {/* Add Comment */}
         <hr className="bg-gray-800 w-full my-3 " />

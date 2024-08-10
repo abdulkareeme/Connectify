@@ -50,7 +50,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-white px-6 py-7 rounded">
+    <div className="bg-[#f1f1f1] text-[#222] px-6 py-7 rounded">
       <Formik initialValues={initialValues} validationSchema={LoginInSchema}>
         {({ values, isValid, handleChange, handleBlur, errors, touched }) => (
           <form
@@ -119,7 +119,7 @@ const Login = () => {
               <Link className="text-[12px]" to={"/forget_password"}>
                 Forget your password?
               </Link>
-              <span className="text-[12px] text-black">
+              <span className="text-[12px] text-[#222]">
                 Don't have an account <Link to={"/signup"}>Sign up</Link>
               </span>
             </div>

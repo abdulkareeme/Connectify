@@ -4,7 +4,12 @@ import PostCard from "./PostCard";
 const GridPostsList = ({ posts }) => {
   return (
     <>
-      {posts?.length > 0 ? (
+      {!posts && (
+        <div className="w-full h-[200px] flex items-center justify-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
+      {posts && (
         <div className="posts grid grid-cols-3 gap-1">
           {posts?.map((post, index) => (
             <PostCard
@@ -16,9 +21,10 @@ const GridPostsList = ({ posts }) => {
             />
           ))}
         </div>
-      ) : (
-        <div className="w-full flex items-center">
-          <h2 className="text-[20px] w-fit text-center mx-auto">
+      )}
+      {posts?.length == 0 && (
+        <div className="w-full h-[150px]  flex items-center">
+          <h2 className="text-[25px] w-fit text-center mx-auto">
             There is no posts!
           </h2>
         </div>

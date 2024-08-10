@@ -28,7 +28,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f3f3f3;
+  background: white;
 }
 
 h1 {
@@ -43,7 +43,7 @@ h1 {
 }
 
 @layer components {
-  .btn-primary {  
+  .btn-primary {
     @apply flex items-center justify-center border-none outline-none bg-blue-700 text-white font-bold px-4 py-2 rounded;
   }
   .input-primary {
@@ -51,5 +51,8 @@ h1 {
   }
   .error {
     @apply border border-red-500 border-solid;
+  }
+  .settingitem {
+    @apply text-black font-semibold text-[16px] flex items-center gap-2 w-full justify-center p-3;
   }
 }

@@ -14,7 +14,7 @@ import LikesModal from "./LikesModal";
 import { getRelativeTime, isLikedByMe, isSavedByMe } from "../utils";
 
 const storedUser = Cookies.get("userTotalInfo") || "";
-const userInfo = JSON.parse(storedUser);
+const userInfo = storedUser && JSON.parse(storedUser);
 
 const PostModal = ({ data, id }) => {
   const token = Cookies.get("userToken") || "";
@@ -117,6 +117,7 @@ const PostModal = ({ data, id }) => {
     document.getElementById(`my_modal_${id}_${id}`).showModal();
   };
   const postDate = getRelativeTime(data.created_at);
+  console.log("post daata",data);
 
   return (
     <>
@@ -131,7 +132,7 @@ const PostModal = ({ data, id }) => {
             <div className="w-1/2 h-full">
               <img
                 className="w-full h-full object-cover"
-                src={data?.photo || "/src/assets/flowers.jpg"}
+                src={data?.image || "/src/assets/flowers.jpg"}
                 alt=""
               />
             </div>

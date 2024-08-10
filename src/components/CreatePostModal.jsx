@@ -2,19 +2,20 @@
 import Cookies from "js-cookie";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { useUserContext } from "../Context/UserContextProvider";
 
-const storedUser = Cookies.get("userTotalInfo") || "";
-const userInfo = JSON.parse(storedUser);
-
-const CreatePostModal = ({ id }) => {
+const CreatePostModal = () => {
   const token = Cookies.get("userToken") || "";
+  const { user: userInfo } = useUserContext();
+
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const [uploadImage, setUploadImage] = useState(false);
   const fileInputRef = useRef(null);
+  const captionRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileInputChange = (e) => {
-    setUploadImage(true);
     setFile(e.target.files[0]);
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -24,6 +25,34 @@ const CreatePostModal = ({ id }) => {
   };
   const handleButtonClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handleAddPost = async () => {
+    try {
+      setIsLoading(true);
+      console.log(captionRef.current.value);
+      // Create a FormData object
+      const formData = new FormData();
+      formData.append("content", captionRef.current.value);
+      formData.append("image", file);
+      formData.append("video", file);
+      const res = await axios.post(
+        `https://abdulkareem3.pythonanywhere.com/social/posts/`,
+        formData,
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(res.data);
+      document.getElementById(`my_modal_7744`).closeModal();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -38,8 +67,8 @@ const CreatePostModal = ({ id }) => {
           <h3 className="font-bold text-lg mb-3 mx-auto w-fit">
             Create new post
           </h3>
-          <div className="flex gap-4 px-3 h-[90%]">
-            <div className="w-1/2 flex justify-center items-center border border-gray-400 border-solid">
+          <div className="flex gap-0 px-3 h-[90%]">
+            <div className="w-1/2 flex justify-center items-center border border-gray-300 border-solid">
               {!imageUrl ? (
                 <>
                   <input
@@ -95,27 +124,42 @@ const CreatePostModal = ({ id }) => {
                 />
               )}
             </div>
-            <div className="w-1/2 h-full flex flex-col gap-2">
+            <div className="relative w-1/2 h-full flex flex-col gap-2 border border-gray-300 border-solid p-3">
               <div className="flex gap-2 items-center">
                 <img
-                  className="w-[40px] h-[40px] rounded-full object-cover cursor-pointer"
+                  className="w-[40px] h-[40px] rounded-full object-cover"
                   src={userInfo?.photo}
                   alt=""
                 />
-                <span className="text-[15px] cursor-pointer">
+                <span className="text-[15px] text-black font-bold">
                   {userInfo?.username}
                 </span>
               </div>
               <textarea
+                ref={captionRef}
                 name=""
                 id=""
                 placeholder="Write A Caption..."
-                className="p-2"
-                rows={7}
+                className="p-2 focus:outline-none focus:border-transparent"
+                rows={13}
               ></textarea>
-              <button className="bg-blue-500 text-white text-[15px] px-4 py-1 w-max">
-                Post
-              </button>
+              <div className="flex justify-end w-full absolute right-3 bottom-3">
+                {!isLoading ? (
+                  <button
+                    onClick={handleAddPost}
+                    className="bg-blue-500 text-white text-[18px] px-4 py-1 rounded w-max"
+                  >
+                    Post
+                  </button>
+                ) : (
+                  <button
+                    className={`btn-primary disable`}
+                    disabled={!isLoading}
+                  >
+                    <span className="loading loading-spinner loading-md"></span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

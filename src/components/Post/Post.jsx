@@ -11,19 +11,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { getRelativeTime, isLikedByMe, isSavedByMe } from "../../utils";
 import LikesModal from "../LikesModal";
+import { useSWRConfig } from "swr";
+import { Link } from "react-router-dom";
+import { useUserContext } from "../../Context/UserContextProvider";
 
 const token = Cookies.get("userToken") || "";
-const storedUser = Cookies.get("userTotalInfo") || "";
-const userInfo = JSON.parse(storedUser);
 
 const Post = ({ data, allSavedPostsId }) => {
+  const { user: userInfo } = useUserContext();
+
   const [isLiked, setIsLiked] = useState(
     isLikedByMe(data.likes, userInfo.username)
   );
-  console.log("PostData", data);
   const [likes, setLikes] = useState(data.likes.length);
   const [commentNumber, setCommentsNumber] = useState(data.comments.length);
   const [isSaved, setIsSaved] = useState(isSavedByMe(allSavedPostsId, data.id));
+
+  const { mutate } = useSWRConfig();
 
   const handleLike = async (id) => {
     try {
@@ -41,6 +45,7 @@ const Post = ({ data, allSavedPostsId }) => {
         }
       );
       console.log(res);
+      mutate(`${data.user.username}/${data.id}/post_likes`);
     } catch (err) {
       console.log(err);
       setIsLiked(false);
@@ -63,6 +68,7 @@ const Post = ({ data, allSavedPostsId }) => {
         }
       );
       console.log(res);
+      mutate(`${data.user.username}/${data.id}/post_likes`);
     } catch (err) {
       console.log(err);
       setIsLiked(true);
@@ -122,13 +128,17 @@ const Post = ({ data, allSavedPostsId }) => {
   return (
     <div className="Post">
       <div className="userinfo flex items-center gap-3 p-1 text-[14px]">
-        <img
-          src={data.user.photo}
-          className=" w-[40px] h-[40px] rounded-full"
-          alt=""
-        />
+        <Link to={`/${data.user.username}`}>
+          <img
+            src={data.user.photo}
+            className=" w-[40px] h-[40px] rounded-full"
+            alt=""
+          />
+        </Link>
         <div className="flex gap-[3px] items-center">
-          <span>{data.user.username}</span>
+          <Link to={`/${data.user.username}`} className="text-black">
+            {data.user.username}
+          </Link>
           <span className="text-[#737373] text-[11px]">•</span>
           <span className="text-[#737373]">{postDate}</span>
         </div>
@@ -192,7 +202,7 @@ const Post = ({ data, allSavedPostsId }) => {
         commentsData={data?.comments}
         setCommentsNumber={setCommentsNumber}
       />
-      <LikesModal id={data?.id} />
+      <LikesModal id={data?.id} username={data.user.username} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getRelativeTime } from "../utils";
 
 const Comment = ({ comment, user, commentTime }) => {
-  const time = getRelativeTime(commentTime);
+  const time = commentTime !== "now" && getRelativeTime(commentTime);
 
   return (
     <div className="flex gap-2">

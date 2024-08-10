@@ -36,7 +36,7 @@ const ConfirmEmail = () => {
   return (
     <section className="w-screen h-screen flex justify-center items-center">
       <Toaster />
-      <div className="container mx-auto w-fit flex flex-col gap-2">
+      <div className="container mx-auto w-fit flex flex-col gap-2 text-[#222]">
         <h1 className="w-fit text-center">Please confirm your email address</h1>
         <h2 className="text-xl mx-auto w-fit">
           Thank you for signing up on our website

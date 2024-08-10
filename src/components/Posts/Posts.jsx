@@ -3,6 +3,7 @@ import Post from "../Post/Post";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import PostSkeleton from "../PostSkeleton";
 const token = Cookies.get("userToken") || "";
 
 const Posts = () => {
@@ -48,18 +49,21 @@ const Posts = () => {
   }, []);
   return (
     <div className="Posts">
-      {!allPosts && (
-        <span className="loading loading-spinner loading-xl"></span>
-      )}
+      {!allPosts &&
+        Array.from({ length: 4 }).map((_, index) => (
+          <>
+            <PostSkeleton key={index} />
+            {index < 3 && <hr className="bg-[#efefef]" />}
+          </>
+        ))}
       {allPosts &&
         allSavedPostsId &&
         allPosts?.map((post, index) => {
           return (
-            <Post
-              key={index}
-              data={post}
-              allSavedPostsId={allSavedPostsId}
-            />
+            <>
+              <Post key={index} data={post} allSavedPostsId={allSavedPostsId} />
+              {index < allPosts.length - 1 && <hr className="bg-[#efefef]" />}
+            </>
           );
         })}
     </div>

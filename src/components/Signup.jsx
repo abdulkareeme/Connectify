@@ -53,7 +53,7 @@ const Signup = () => {
       username: values.email.substring(0, values.email.indexOf("@")),
       gender,
       birth_date: format(birth_date, "yyyy-MM-dd"),
-      is_private: true,
+      is_private: false,
     };
     console.log(valuesToSend);
 
@@ -80,7 +80,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-white px-6 py-7 rounded">
+    <div className="bg-[#f1f1f1] text-[#222] px-6 py-7 rounded">
       <Formik initialValues={initialValues} validationSchema={SignInSchema}>
         {({ values, isValid, handleChange, handleBlur, errors, touched }) => (
           <form
