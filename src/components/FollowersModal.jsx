@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import UserCard from "./UserCard";
 import { useParams } from "react-router-dom";
-import UserSkeleton from "./UserSkeleton";
+import UserSkeleton from "./Skeleton/UserSkeleton";
+import useSWR from "swr";
 const FollowersModal = () => {
   const { username } = useParams();
 
   const token = Cookies.get("userToken") || "";
-  const [allUsers, setAllUsers] = useState(null);
 
   const getFollowers = async () => {
     try {
@@ -22,15 +21,13 @@ const FollowersModal = () => {
         }
       );
       console.log(res);
-      setAllUsers(res.data);
+      return res.data;
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    getFollowers();
-  }, []);
+  const { data: allUsers } = useSWR(`${username}/followers`, getFollowers);
   return (
     <dialog id="my_modal_1" className="modal">
       <div className="modal-box bg-white">
@@ -47,7 +44,7 @@ const FollowersModal = () => {
               <UserSkeleton key={index} />
             ))}
           {allUsers?.map((user, index) => (
-            <UserCard key={index} user={user} followingUser={allUsers} />
+            <UserCard key={index} user={user} />
           ))}
         </div>
       </div>

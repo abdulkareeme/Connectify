@@ -69,26 +69,26 @@ const Sidebar = () => {
           );
         })}
         <li className={`font-bold text-[17px]`}>
-          <NavLink
+          <span
             onClick={() => openFollowRequestsModal()}
-            className="text-black flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
+            className="text-black font-semibold cursor-pointer flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
           >
             <span className="text-[25px]">
               <FaRegHeart />
             </span>
             Follow Request
-          </NavLink>
+          </span>
         </li>
         <li className={`font-bold text-[17px]`}>
-          <NavLink
+          <span
             onClick={() => openCreatePostModal()}
-            className="text-black flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
+            className="text-black font-semibold cursor-pointer flex gap-4 items-center opacity-80 rounded transition p-4 hover:bg-gray-100 hover:text-black hover:opacity-100"
           >
             <span className="text-[25px]">
               <FaRegSquarePlus />
             </span>
             Create Post
-          </NavLink>
+          </span>
         </li>
         <li className={`font-bold text-[17px]`}>
           <NavLink

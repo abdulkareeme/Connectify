@@ -15,7 +15,19 @@ export const isSavedByMe = (postsId, id) => {
 };
 
 export const isFollwingByMe = (followingUser, currentUser) => {
-  return followingUser.includes(currentUser);
+  const userFound = followingUser.filter(
+    (user) => user.username === currentUser.username
+  );
+  console.log("userFound", userFound.length > 0);
+  return userFound.length > 0;
+};
+
+export const isFollowingByMe2 = (followingUser, currentUser) => {
+  const userFound = followingUser.filter(
+    (user) => user.username === currentUser.username
+  );
+  console.log("userFound", userFound.length > 0);
+  return userFound.length > 0;
 };
 
 export const getRelativeTime = (date) => {

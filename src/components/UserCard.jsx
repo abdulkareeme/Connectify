@@ -3,21 +3,49 @@ import { isFollwingByMe } from "../utils";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../Context/UserContextProvider";
+import useSWR from "swr";
 
 /* eslint-disable react/prop-types */
 
-const UserCard = ({ user, followingUser }) => {
+const UserCard = ({ user, type }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const token = Cookies.get("userToken") || "";
   const { user: userInfo } = useUserContext();
+
+  const getFollowing = async () => {
+    try {
+      const res = await axios(
+        `https://abdulkareem3.pythonanywhere.com/social/following/${userInfo.username}/`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      console.log(res);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const { data: allUsers } = useSWR(
+    `${userInfo.username}/following`,
+    getFollowing
+  );
+
   const [isFollowing, setIsFollowing] = useState(null);
 
   useEffect(() => {
-    followingUser &&
-      setIsFollowing(isFollwingByMe(followingUser, userInfo.username));
-  }, [followingUser]);
+    if (user && allUsers) {
+      setIsFollowing(isFollwingByMe(allUsers, user));
+    }
+  }, [user, allUsers]);
 
   const followRequest = async (username) => {
     try {
+      setIsLoading(true);
       setIsFollowing(true);
       const res = await axios.post(
         `https://abdulkareem3.pythonanywhere.com/social/follow/${username}/`,
@@ -32,10 +60,13 @@ const UserCard = ({ user, followingUser }) => {
     } catch (err) {
       console.log(err);
       setIsFollowing(false);
+    } finally {
+      setIsLoading(false);
     }
   };
   const unFollowRequest = async (username) => {
     try {
+      setIsLoading(true);
       setIsFollowing(false);
       const res = await axios.delete(
         `https://abdulkareem3.pythonanywhere.com/social/follow/${username}/`,
@@ -49,6 +80,8 @@ const UserCard = ({ user, followingUser }) => {
     } catch (err) {
       console.log(err);
       setIsFollowing(true);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -61,17 +94,33 @@ const UserCard = ({ user, followingUser }) => {
         />
         <span className="text-[15px] cursor-pointer">{user?.username}</span>
       </div>
-      <button
-        onClick={() =>
-          isFollowing
-            ? unFollowRequest(user?.username)
-            : followRequest(user?.username)
-        }
-        className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
-      >
-        Following
-        {/* {isFollowing ? "Following" : "Follow"} */}
-      </button>
+      {type === "suggestUser" ? (
+        <span
+          onClick={() =>
+            isFollowing
+              ? unFollowRequest(user?.username)
+              : followRequest(user?.username)
+          }
+          className="text-[13px] text-[#0095f6] cursor-pointer"
+        >
+          {isFollowing ? "Following" : "Follow"}
+        </span>
+      ) : (
+        <button
+          onClick={() =>
+            isFollowing
+              ? unFollowRequest(user?.username)
+              : followRequest(user?.username)
+          }
+          disabled={isLoading}
+          className="flex gap-2 bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
+        >
+          {isLoading ? (
+            <span className="loading loading-spinner loading-md"></span>
+          ) : null}
+          {isFollowing ? "Following" : "Follow"}
+        </button>
+      )}
     </div>
   );
 };

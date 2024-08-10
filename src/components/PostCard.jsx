@@ -15,8 +15,13 @@ const PostCard = ({ data, postImg, likes, comments }) => {
       onMouseOver={() => setIsHovering(1)}
       onMouseLeave={() => setIsHovering(0)}
       onClick={() => openPostModal(data?.id)}
-      className="relative h-[300px] transition hover:before:bg-black before:w-full before:h-full before:top-0 before:left-0 hover:opacity-60 cursor-pointer"
+      className="relative h-[300px] transition cursor-pointer"
     >
+      <div
+        className={`absolute inset-0 bg-black transition-opacity duration-300 ${
+          isHovering ? "opacity-70" : "opacity-0"
+        }`}
+      ></div>
       {isHovering ? (
         <div className="text-white absolute left-[35%] top-1/2 flex items-center gap-8">
           <span className="flex items-center gap-2 text-[20px]">

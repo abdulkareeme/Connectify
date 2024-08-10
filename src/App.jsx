@@ -12,6 +12,7 @@ import ConfirmForForgetPassword from "./pages/ConfirmForForgetPassword";
 import MainLayout from "./components/MainLayout";
 import EditMyProfile from "./pages/EditMyProfile";
 import UserContextProvider from "./Context/UserContextProvider";
+import Search from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "my_profile/edit",
         element: <EditMyProfile />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
     ],
   },

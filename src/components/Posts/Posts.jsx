@@ -51,19 +51,19 @@ const Posts = () => {
     <div className="Posts">
       {!allPosts &&
         Array.from({ length: 4 }).map((_, index) => (
-          <>
-            <PostSkeleton key={index} />
+          <div key={index}>
+            <PostSkeleton />
             {index < 3 && <hr className="bg-[#efefef]" />}
-          </>
+          </div>
         ))}
       {allPosts &&
         allSavedPostsId &&
         allPosts?.map((post, index) => {
           return (
-            <>
-              <Post key={index} data={post} allSavedPostsId={allSavedPostsId} />
+            <div key={index}>
+              <Post data={post} allSavedPostsId={allSavedPostsId} />
               {index < allPosts.length - 1 && <hr className="bg-[#efefef]" />}
-            </>
+            </div>
           );
         })}
     </div>

@@ -14,6 +14,7 @@ const EditMyProfile = () => {
   const [firstName, setFirstName] = useState(user.first_name || "");
   const [lastName, setLastName] = useState(user.last_name || "");
   const [imageUrl, setImageUrl] = useState(user.photo || "");
+  const [isPrivate, setIsPrivate] = useState(user.is_private);
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadImage, setUploadImage] = useState(false);
@@ -42,7 +43,7 @@ const EditMyProfile = () => {
       first_name: firstName,
       last_name: lastName,
       birth_date: user.birth_date,
-      is_private: user.is_private,
+      is_private: isPrivate,
     };
     setIsSubmitting(1);
     try {
@@ -166,15 +167,29 @@ const EditMyProfile = () => {
         ></textarea>
       </div>
 
+      <div className="form-control w-52">
+        <label className="label cursor-pointer">
+          <span className="label-text text-lg font-semibold">
+            Private Account
+          </span>
+          <input
+            type="checkbox"
+            className="toggle bg-gray-300 border border-gray-400 checked:bg-blue-500"
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.target.checked)}
+          />
+        </label>
+      </div>
+
       <div>
         <button
           className="flex gap-2 items-center bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
           onClick={() => handleSubmit()}
           disabled={isSubmitting}
         >
-          {isSubmitting && (
+          {isSubmitting ? (
             <span className="loading loading-spinner loading-md"></span>
-          )}
+          ) : null}
           Save Changes
         </button>
       </div>

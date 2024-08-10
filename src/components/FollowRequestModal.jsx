@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Cookies from "js-cookie";
+import useSWR from "swr";
 const token = Cookies.get("userToken") || "";
 
 const FollowRequestModal = () => {
-  const [allUsers, setAllUsers] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading1, setIsLoading1] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
 
   const getFollowRequests = async () => {
     try {
@@ -19,7 +19,7 @@ const FollowRequestModal = () => {
         }
       );
       console.log("getFollowRequests", res.data);
-      setAllUsers(res.data);
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -27,7 +27,7 @@ const FollowRequestModal = () => {
 
   const approveRequest = async (username) => {
     try {
-        setIsLoading(true);
+      setIsLoading1(true);
       const res = await axios.post(
         `https://abdulkareem3.pythonanywhere.com/social/approve-follow/${username}/`,
         null,
@@ -38,15 +38,17 @@ const FollowRequestModal = () => {
         }
       );
       console.log(res);
+      mutate();
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+    } finally {
+      setIsLoading1(false);
     }
   };
 
   const cancelRequest = async (username) => {
     try {
-        setIsLoading(true);
+      setIsLoading2(true);
       const res = await axios.delete(
         `https://abdulkareem3.pythonanywhere.com/social/approve-follow/${username}/`,
         {
@@ -55,16 +57,18 @@ const FollowRequestModal = () => {
           },
         }
       );
+      mutate();
       console.log(res);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      setIsLoading2(false);
     }
   };
 
-  useEffect(() => {
-    getFollowRequests();
-  }, []);
+  const { data: allUsers, mutate } = useSWR(
+    `/follow_requests`,
+    getFollowRequests
+  );
 
   return (
     <dialog id="my_modal_8899" className="modal">
@@ -95,18 +99,26 @@ const FollowRequestModal = () => {
                 </span>
               </div>
               <div className="flex items-center gap-2">
-              <button
-                onClick={()=> approveRequest(user?.follower.username)}
-                className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
-              >
-                {isLoading ? <span className="loading loading-spinner loading-md"></span> : "Confirm"}
-              </button>
-              <button
-                onClick={()=> cancelRequest(user?.follower.username)}
-                className="bg-gray-400 text-white px-4 py-1 rounded transition"
-              >
-                {isLoading ? <span className="loading loading-spinner loading-md"></span> : "Delete"}
-              </button>
+                <button
+                  onClick={() => approveRequest(user?.follower.username)}
+                  className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-1 rounded transition"
+                >
+                  {isLoading1 ? (
+                    <span className="loading loading-spinner loading-md"></span>
+                  ) : (
+                    "Confirm"
+                  )}
+                </button>
+                <button
+                  onClick={() => cancelRequest(user?.follower.username)}
+                  className="bg-gray-400 text-white px-4 py-1 rounded transition"
+                >
+                  {isLoading2 ? (
+                    <span className="loading loading-spinner loading-md"></span>
+                  ) : (
+                    "Delete"
+                  )}
+                </button>
               </div>
             </div>
           ))}

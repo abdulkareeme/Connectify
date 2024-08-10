@@ -2,11 +2,13 @@
 import Cookies from "js-cookie";
 import UserCard from "./UserCard";
 import axios from "axios";
-import UserSkeleton from "./UserSkeleton";
 import useSWR from "swr";
+import { useUserContext } from "../Context/UserContextProvider";
+import UserSkeleton from "./Skeleton/UserSkeleton";
 
 const LikesModal = ({ id, username }) => {
   const token = Cookies.get("userToken") || "";
+  const { user: userInfo } = useUserContext();
 
   const getPostLikes = async () => {
     try {
@@ -24,10 +26,10 @@ const LikesModal = ({ id, username }) => {
       console.log(err);
     }
   };
-  const getFollowers = async () => {
+  const getFollowingUsers = async () => {
     try {
       const res = await axios(
-        `https://abdulkareem3.pythonanywhere.com/social/followers/${username}/`,
+        `https://abdulkareem3.pythonanywhere.com/social/following/${userInfo.username}/`,
         {
           headers: {
             Authorization: `${token}`,
@@ -43,7 +45,10 @@ const LikesModal = ({ id, username }) => {
     `${username}/${id}/post_likes`,
     getPostLikes
   );
-  const { data: allUsers } = useSWR(`${username}/user_followers`, getFollowers);
+  const { data: allUsers } = useSWR(
+    `${userInfo.username}/user_following`,
+    getFollowingUsers
+  );
 
   return (
     <dialog id={`my_modal_${id}_${id}`} className="modal">
@@ -65,6 +70,7 @@ const LikesModal = ({ id, username }) => {
             allLikes.map((like, index) => {
               return (
                 <UserCard
+                  type="normal"
                   key={index}
                   user={like.user}
                   followingUser={allUsers}
